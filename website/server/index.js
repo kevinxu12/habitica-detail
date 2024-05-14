@@ -7,6 +7,11 @@ if (process.env.NODE_ENV !== 'production') {
   require('@babel/register'); // eslint-disable-line import/no-extraneous-dependencies
 }
 
+const { setup } = require('@detail-dev/trace');
+setup({
+  localDevMode: true
+});
+
 const cluster = require('cluster');
 
 const setupNconf = require('./libs/setupNconf');

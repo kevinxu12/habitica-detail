@@ -19,7 +19,7 @@ import './models/group';
 import './models/user';
 
 const server = http.createServer();
-const app = express();
+export const app = express();
 
 app.set('port', nconf.get('PORT'));
 
