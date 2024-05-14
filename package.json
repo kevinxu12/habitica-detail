@@ -88,6 +88,7 @@
     "test:build": "gulp test:prepare:build",
     "test:api-v3": "gulp test:api-v3",
     "test:api:unit": "gulp test:api:unit",
+    "test:api:unit:specific": "gulp test:api:specific-unit",
     "test:api-v3:integration": "gulp test:api-v3:integration",
     "test:api-v3:integration:separate-server": "NODE_ENV=test gulp test:api-v3:integration:separate-server",
     "test:api-v4:integration": "gulp test:api-v4:integration",
@@ -103,7 +104,7 @@
     "client:unit": "cd website/client && npm run test:unit",
     "start": "gulp nodemon",
     "debug": "gulp nodemon --inspect",
-    "mongo:dev": "run-rs -v 5.0.23 -l ubuntu1804 --keep --dbpath mongodb-data --number 1 --quiet",
+    "mongo:dev": "run-rs -v 5.0.23 -l ubuntu1804 -h 127.0.0.1 --keep --dbpath mongodb-data --number 1 --quiet",
     "postinstall": "git config --global url.\"https://\".insteadOf git:// && gulp build && cd website/client && npm install",
     "apidoc": "gulp apidoc"
   },

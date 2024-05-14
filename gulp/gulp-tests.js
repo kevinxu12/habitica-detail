@@ -146,6 +146,17 @@ gulp.task('test:content:safe', gulp.series('test:prepare:build', cb => {
   pipe(runner);
 }));
 
+function integrationTestCommandForTarget () {
+  const fileArg = process.argv.find(arg => arg.startsWith('--file='));
+  if (!fileArg) {
+    return 'echo "Missing --file argument"';
+  }
+  const specificFile = fileArg.split('=')[1];
+  return `istanbul cover --dir coverage/coverage/api-unit --report lcovonly node_modules/mocha/bin/_mocha -- ${specificFile} --require ./test/helpers/start-server`;
+}
+
+gulp.task('test:api:specific-unit', runInChildProcess(integrationTestCommandForTarget(), {}));
+
 gulp.task(
   'test:api:unit:run',
   runInChildProcess(integrationTestCommand('test/api/unit', 'coverage/api-unit')),
