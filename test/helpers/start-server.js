@@ -7,7 +7,7 @@ const setupNconf = require('../../website/server/libs/setupNconf');
 
 // fix further imports of require/import syntaxes
 require('@babel/register');
-
+process.env.LOAD_SERVER = "0"
 if (process.env.LOAD_SERVER === '0') { // when the server is in a different process we simply connect to mongoose
   setupNconf('./config.json');
   // Use Q promises instead of mpromise in mongoose
