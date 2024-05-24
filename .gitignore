@@ -48,3 +48,8 @@ webpack.webstorm.config
 # mongodb replica set for local dev
 mongodb-*.tgz
 /mongodb-data
+
+website/detail
+website/detail/generated
+spans.jsonl
+generated/
