@@ -14,4 +14,5 @@ module.exports = {
     collectCoverage: true,
     coverageDirectory: "<rootDir>/coverage/detail",
     coverageReporters: ["lcov"],
+    globalTeardown: '<rootDir>/test-teardown-globals.js',
   };
