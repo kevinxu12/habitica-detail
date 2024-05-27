@@ -19,6 +19,7 @@ export function getDevelopmentConnectionUrl (originalConnectionUrl) {
     return originalConnectionUrl.replace('mongodb://localhost', `mongodb://${hostname}`);
   }
 
+  console.log(`getDevelopmentConnectionUrl: ${originalConnectionUrl}`);
   return originalConnectionUrl;
 }
 

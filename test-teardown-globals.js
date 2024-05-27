@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-commonjs
 module.exports = () => {
-    process.exit(0);
+  process.exit(0);
 };
