@@ -120,6 +120,7 @@
     "cross-spawn": "^7.0.3",
     "expect.js": "^0.3.1",
     "istanbul": "^1.1.0-alpha.1",
+    "jest-silent-reporter": "^0.6.0",
     "mocha": "^5.1.1",
     "monk": "^7.3.4",
     "require-again": "^2.0.0",

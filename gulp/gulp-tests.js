@@ -152,7 +152,7 @@ function integrationTestCommandForTarget () {
     return 'echo "Missing --file argument"';
   }
   const specificFile = fileArg.split('=')[1];
-  return `istanbul cover --dir coverage/coverage/api-unit --report lcovonly node_modules/mocha/bin/_mocha -- ${specificFile} --require ./test/helpers/start-server`;
+  return `node_modules/mocha/bin/_mocha ${specificFile} --require ./test/helpers/start-server`;
 }
 
 gulp.task('test:api:specific-unit', runInChildProcess(integrationTestCommandForTarget(), {}));

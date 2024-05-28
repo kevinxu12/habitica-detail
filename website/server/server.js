@@ -4,10 +4,10 @@ import http from 'http';
 import logger from './libs/logger';
 
 // Uncomment out before `make run`
-// import setupNconf from './libs/setupNconf';
+import setupNconf from './libs/setupNconf';
 
-// // Initialize configuration BEFORE anything
-// setupNconf();
+// Initialize configuration BEFORE anything
+setupNconf();
 
 // Setup translations
 // Must come before attach middlewares so Mongoose validations can use translations
@@ -33,8 +33,8 @@ attachMiddlewares(app, server);
 
 server.on('request', app);
 // Comment out for `make run`
-server.listen(app.get('port'), () => {
-  logger.info(`Express server listening on port ${app.get('port')}`);
-});
+// server.listen(app.get('port'), () => {
+//   logger.info(`Express server listening on port ${app.get('port')}`);
+// });
 
 export default server;
