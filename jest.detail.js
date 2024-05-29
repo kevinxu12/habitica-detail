@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
   testEnvironment: '<rootDir>/website/detail/generated/detail.environment.ts',
   setupFilesAfterEnv: ['<rootDir>/website/detail/generated/detail.setup.ts'],

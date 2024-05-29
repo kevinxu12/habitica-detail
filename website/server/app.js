@@ -1,9 +1,9 @@
-import setupNconf from './libs/setupNconf';
-setupNconf();
-
 import express from 'express';
 import nconf from 'nconf';
 import http from 'http';
+import setupNconf from './libs/setupNconf';
+setupNconf();
+
 import attachMiddlewares from './middlewares/index';
 
 // Setup translations
@@ -19,7 +19,7 @@ import './models/challenge';
 import './models/group';
 import './models/user';
 
-console.log("surely this hits");
+console.log('surely this hits');
 const app = express();
 app.set('port', nconf.get('PORT'));
 
