@@ -186,4 +186,117 @@ describe('common.fns.updateStats', () => {
       expect(user.fns.autoAllocate).to.be.calledOnce;
     });
   });
+
+  context('User levels up multiple times', () => {
+    beforeEach(() => {
+      user.stats = {
+        hp: 50,
+        mp: 50,
+        exp: 100,
+        gp: 20,
+        lvl: 2,
+        str: 1,
+        int: 1, 
+        per: 1,
+        con: 1,
+        points: 0,
+      };
+      user.flags.rebirthEnabled = false;
+      user.flags.levelDrops = {};
+      user.items.quests = {};
+    });
+    
+    it('updates user stats and notifications correctly', () => {
+      const statsToUpdate = {
+        hp: 50, 
+        mp: 50,
+        exp: 1000,
+        gp: 30,
+      };
+      
+      const expectedFinalStats = {
+        hp: 50,
+        mp: 50,
+        exp: 195,
+        gp: 30,
+        lvl: 8,
+        str: 1,
+        int: 1,
+        per: 1, 
+        con: 1,
+        points: 4,
+      };
+      
+      updateStats(user, statsToUpdate);
+      
+      expect(user.stats.hp).to.equal(expectedFinalStats.hp);
+      expect(user.stats.mp).to.equal(expectedFinalStats.mp);
+      expect(user.stats.exp).to.equal(expectedFinalStats.exp);
+      expect(user.stats.gp).to.equal(expectedFinalStats.gp);
+      expect(user.stats.lvl).to.equal(expectedFinalStats.lvl);
+      expect(user.stats.str).to.equal(expectedFinalStats.str);
+      expect(user.stats.int).to.equal(expectedFinalStats.int);
+      expect(user.stats.per).to.equal(expectedFinalStats.per);
+      expect(user.stats.con).to.equal(expectedFinalStats.con);
+      expect(user.stats.points).to.equal(expectedFinalStats.points);
+      expect(user.flags.customizationsNotification).to.equal(true);
+      expect(user.flags.itemsEnabled).to.equal(true);
+      expect(user._tmp.leveledUp).to.have.lengthOf(1);
+      expect(user._tmp.leveledUp[0].initialLvl).to.equal(2);
+      expect(user._tmp.leveledUp[0].newLvl).to.equal(8);
+    });
+  });
+  
+  context('User reaches level 15 for atom quest drop', () => {
+    beforeEach(() => {
+      user.stats = {
+        lvl: 14,
+      };
+      user.items.quests = {};
+      user.flags.levelDrops = {};
+    });
+    
+    it('adds atom1 quest item and updates levelDrops flag', () => {
+      updateStats(user, { exp: 1000 });
+      
+      expect(user.stats.lvl).to.be.at.least(15);
+      expect(user.items.quests.atom1).to.equal(1);
+      expect(user.flags.levelDrops.atom1).to.equal(true);
+    });
+  });
+  
+  context('User reaches level 60 for moonstone quest drop', () => {
+    beforeEach(() => {
+      user.stats = {
+        lvl: 59,
+      };
+      user.items.quests = {};
+      user.flags.levelDrops = {};
+    });
+    
+    it('adds moonstone1 quest item and updates levelDrops flag', () => {
+      updateStats(user, { exp: 10000 });
+      
+      expect(user.stats.lvl).to.be.at.least(60);
+      expect(user.items.quests.moonstone1).to.equal(1);
+      expect(user.flags.levelDrops.moonstone1).to.equal(true);      
+    });
+  });
+  
+  context('User reaches level 50 to enable rebirth', () => {
+    beforeEach(() => {
+      user.stats = {
+        lvl: 49,
+      };
+      user.flags.rebirthEnabled = false;
+    });
+    
+    it('updates rebirth flag and adds notification', () => {
+      updateStats(user, { exp: 10000 });
+      
+      expect(user.stats.lvl).to.be.at.least(50);
+      expect(user.flags.rebirthEnabled).to.equal(true);
+      expect(user.addNotification).to.be.calledWith('REBIRTH_ENABLED');
+    });
+  });
 });
