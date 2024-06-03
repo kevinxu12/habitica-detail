@@ -18,6 +18,15 @@ describe('ensure access middlewares', () => {
     next = generateNext();
   });
 
+  it('allows a user with fullAccess permission regardless of specific permission', () => {
+    res.locals = { user: { permissions: { fullAccess: true } } };
+
+    ensurePermission('somePermission')(req, res, next);
+
+    expect(next).to.be.calledOnce;
+    expect(next.args[0]).to.be.empty;
+  });
+
   context('ensure admin', () => {
     it('returns not authorized when user is not in userSupport', () => {
       res.locals = { user: { permissions: { userSupport: false } } };
