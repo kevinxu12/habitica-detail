@@ -132,6 +132,18 @@ describe('cron utility functions', () => {
 
       expect(result).to.be.sameMoment(localMoment('2020-02-01', -offset));
     });
+
+    it('calculates the start of the previous day when current time is before dayStart in user timezone', () => {
+      const options = {
+        now: moment('2023-06-15T02:30:00.000Z'),
+        dayStart: 4,
+        timezoneOffset: 240
+      };
+
+      const result = startOfDay(options);
+
+      expect(result).to.be.sameMoment('2023-06-14T04:00:00.000-04:00');
+    });
   });
 
   describe('daysSince', () => {
