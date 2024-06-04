@@ -5,12 +5,20 @@ import {
 import {
   generateReq,
 } from '../../../helpers/api-unit.helper';
+import { expect } from 'chai';
+import sinon from 'sinon';
 
 describe('language lib', () => {
   let req;
+  let getLanguageFromBrowserStub;
 
   beforeEach(() => {
     req = generateReq();
+    getLanguageFromBrowserStub = sinon.stub(, 'getLanguageFromBrowser');
+  });
+
+  afterEach(() => {
+    getLanguageFromBrowserStub.restore();
   });
 
   describe('getLanguageFromUser', () => {
@@ -32,6 +40,15 @@ describe('language lib', () => {
       };
 
       expect(getLanguageFromUser(user, req)).to.equal('en');
+    });
+
+    it('falls back to browser language if user is null', () => {
+      req.headers['accept-language'] = 'es-MX';
+      getLanguageFromBrowserStub.returns('es_419');
+      
+      expect(getLanguageFromUser(null, req)).to.equal('es_419');
+      expect(getLanguageFromBrowserStub).to.be.calledOnce;
+      expect(getLanguageFromBrowserStub).to.be.calledWith(req);
     });
   });
 
