@@ -53,3 +53,5 @@ website/detail
 website/detail/generated
 spans.jsonl
 generated/
+
+.nyc_output/
