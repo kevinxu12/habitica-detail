@@ -69,6 +69,15 @@ create_challenge_output=$(curl -s -X POST http://localhost:3000/api/v3/challenge
 
 CHALLENGE1_ID=$(echo "$create_challenge_output" | jq -r '.data.id')
 
+create_task_for_challenge_output=$(
+  curl -s -X POST "http://localhost:3000/api/v3/tasks/challenge/$CHALLENGE1_ID" \
+    -H "Content-Type: application/json" \
+    -H "x-api-user: $USER1_ID" \
+    -H "x-api-key: $USER1_API_TOKEN" \
+    -H "x-client: $USER1_ID-Testing" \
+    -d "{\"type\":\"todo\",\"text\":\"Test first task\"}"
+)
+
 create_chat_id=$(curl -s -X POST http://localhost:3000/api/v3/groups/$GROUP1_ID/chat \
     -H "Content-Type: application/json" \
     -H "x-api-user: $USER1_ID" \

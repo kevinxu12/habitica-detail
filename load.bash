@@ -80,5 +80,33 @@ get_groups_chat_output=$(curl -s -X GET "http://localhost:3000/api/v3/groups/$GR
     -H "x-api-user: $USER_ID" \
     -H "x-api-key: $API_TOKEN" \
     -H "x-client: $USER_ID-Testing")
+    
+# tasks
+get_tasks_for_user_output_1=$(curl -s -X GET "http://localhost:3000/api/v3/tasks/user?type=completedTodos" \
+    -H "Content-Type: application/json" \
+    -H "x-api-user: $USER_ID" \
+    -H "x-api-key: $API_TOKEN" \
+    -H "x-client: $USER_ID-Testing")
+
+get_tasks_for_user_output_2=$(curl -s -X GET "http://localhost:3000/api/v3/tasks/user?type=todos" \
+    -H "Content-Type: application/json" \
+    -H "x-api-user: $USER_ID" \
+    -H "x-api-key: $API_TOKEN" \
+    -H "x-client: $USER_ID-Testing")
+
+in_app_rewards_output=$(curl -s -X GET "http://localhost:3000/api/v3/user/in-app-rewards" \
+    -H "Content-Type: application/json" \
+    -H "x-api-user: $USER_ID" \
+    -H "x-api-key: $API_TOKEN" \
+    -H "x-client: $USER_ID-Testing")
+ 
+ anonymized_output=$(curl -s -X GET "http://localhost:3000/api/v3/user/anonymized" \
+    -H "Content-Type: application/json" \
+    -H "x-api-user: $USER_ID" \
+    -H "x-api-key: $API_TOKEN" \
+    -H "x-client: $USER_ID-Testing")
+ 
+ world_state_output=$(curl -s -X GET "http://localhost:3000/api/v3/world-state" \
+    -H "Content-Type: application/json")
 
 echo "Finished execution"
