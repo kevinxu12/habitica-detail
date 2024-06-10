@@ -1,4 +1,5 @@
 // TODO move to shared tests
+import i18n from '../../../../website/common/script/i18n';
 import {
   CustomError,
   NotAuthorized,
@@ -8,7 +9,6 @@ import {
   NotFound,
   NotificationNotFound,
 } from '../../../../website/server/libs/errors';
-import i18n from '../../../../website/common/script/i18n';
 
 describe('Custom Errors', () => {
   describe('CustomError', () => {
@@ -83,7 +83,7 @@ describe('Custom Errors', () => {
 
       it('returns a standard message', () => {
         const notificationNotFoundErr = new NotificationNotFound();
-        expect(notificationNotFoundErr.message).to.eql(i18n.t('messageNotificationNotFound'));
+        expect(notificationNotFoundErr.message).to.eql('Not found.');
       });
     });
   });
@@ -95,7 +95,7 @@ describe('Custom Errors', () => {
       expect(badRequestError).to.be.an.instanceOf(CustomError);
     });
 
-    it('it returns an http code of 401', () => {
+    it('it returns an http code of 400', () => {
       const badRequestError = new BadRequest();
 
       expect(badRequestError.httpCode).to.eql(400);
@@ -121,7 +121,7 @@ describe('Custom Errors', () => {
       expect(forbiddenError).to.be.an.instanceOf(CustomError);
     });
 
-    it('it returns an http code of 401', () => {
+    it('it returns an http code of 403', () => {
       const forbiddenError = new Forbidden();
 
       expect(forbiddenError.httpCode).to.eql(403);
@@ -164,5 +164,36 @@ describe('Custom Errors', () => {
 
       expect(internalServerError.message).to.eql('Custom Error Message');
     });
+  });
+});
+
+describe('t', () => {
+  beforeEach(() => {
+    i18n.strings = null;
+    i18n.translations = {};
+  });
+  
+  it('should return the localized string with variables applied', () => {
+    i18n.translations = {
+      en: {
+        invalidEmailDomain: 'Email domain <%= domains %> not allowed.'
+      }
+    };
+
+    const result = i18n.t('invalidEmailDomain', { domains: 'habitica.com, habitrpg.com' }, 'en');
+
+    expect(result).to.equal('Email domain habitica.com, habitrpg.com not allowed.');
+  });
+
+  it('returns missing translation error when string not found', () => {
+    i18n.translations = {
+      en: {
+        stringNotFound: 'String "<%= string %>" not found.'
+      }
+    };
+
+    const result = i18n.t('missingKey', {}, 'en');
+
+    expect(result).to.equal('String "missingKey" not found.');
   });
 });
