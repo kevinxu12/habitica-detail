@@ -75,6 +75,30 @@ describe('shared.ops.changeClass', () => {
       expect(user.items.gear.owned.weapon_healer_3).to.be.true;
       expect(user.items.gear.equipped.weapon).to.equal('weapon_healer_3');
     });
+
+    it('changes class to a valid class', async () => {
+      user.stats.lvl = 10;
+      user.balance = 1;
+      user.stats.class = 'warrior';
+      user.flags.classSelected = false;
+      user.items.gear.owned = {weapon_warrior_0: true};
+      const req = {query: {class: 'rogue'}};
+      const analyticsObject = null;
+
+      const [data] = await changeClass(user, req, analyticsObject);
+
+      expect(data).to.eql({
+        preferences: user.preferences,
+        stats: user.stats,
+        flags: user.flags,
+        items: user.items,
+      });
+      expect(user.stats.class).to.equal('rogue');
+      expect(user.flags.classSelected).to.be.true;
+      expect(user.items.gear.owned.weapon_rogue_0).to.be.true;
+      expect(user.items.gear.owned.shield_rogue_0).to.be.true;
+      expect(user.items.gear.owned.weapon_warrior_0).to.be.true;
+    });
   });
 
   context('req.query.class is missing or user.stats.flagSelected is true', () => {
