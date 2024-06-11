@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import {
   generateRes,
   generateReq,
@@ -26,6 +27,16 @@ describe('cache middlewares', () => {
 
     xit('removes the etag header', () => {
       // @TODO how to stub onHeaders
+    });
+
+    it('skips removing the ETag header due to open issue', () => {
+      const mockRemoveHeader = sinon.stub();
+      res.removeHeader = mockRemoveHeader;
+
+      disableCache(req, res, next);
+
+      expect(mockRemoveHeader).to.not.have.been.called;
+      expect(next).to.have.been.calledOnce;
     });
   });
 });
