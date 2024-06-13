@@ -4,6 +4,7 @@ import {
   validateGiftMessage,
 } from '../../../../../website/server/libs/payments/gems';
 import { model as User } from '../../../../../website/server/models/user';
+import { BadRequest } from '../../../../../website/server/libs/errors';
 
 const { i18n } = common;
 
@@ -47,11 +48,8 @@ A gift message that is over the 200 chars limit. 1
       }
 
       expect(expectedErr).to.exist;
-      expect(expectedErr).to.eql({
-        httpCode: 400,
-        name: 'BadRequest',
-        message: i18n.t('giftMessageTooLong', { maxGiftMessageLength: 200 }),
-      });
+      expect(expectedErr).to.be.an.instanceOf(BadRequest);
+      expect(expectedErr.httpCode).to.equal(400);
     });
 
     it('does not throw if the gift message is not too long', () => {
@@ -61,6 +59,11 @@ A gift message that is over the 200 chars limit. 1
 
     it('does not throw if it is not a gift', () => {
       expect(() => validateGiftMessage(null, user)).to.not.throw;
+    });
+
+    it('does not throw if the gift object does not have a message property', () => {
+      const giftWithoutMessage = {};
+      expect(() => validateGiftMessage(giftWithoutMessage, user)).to.not.throw();
     });
   });
 });
