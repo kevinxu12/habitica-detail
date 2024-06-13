@@ -22,4 +22,10 @@ describe('getUtcOffset', () => {
 
     expect(getUtcOffset(user)).to.eql(10);
   });
+
+  it('returns the opposite of user.timezoneOffset when positive', () => {
+    user.preferences.timezoneOffset = 120;
+
+    expect(getUtcOffset(user)).to.eql(-120);
+  });
 });
