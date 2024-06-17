@@ -1,3 +1,4 @@
+import moment from 'moment';
 import rebirth from '../../../website/common/script/ops/rebirth';
 import i18n from '../../../website/common/script/i18n';
 import { MAX_LEVEL } from '../../../website/common/script/constants';
@@ -260,5 +261,45 @@ describe('shared.ops.rebirth', () => {
     await rebirth(user);
 
     expect(user.preferences.automaticAllocation).to.be.false;
+  });
+
+  it('completes a rebirth and resets user data appropriately', async () => {
+    const user = generateUser({
+      balance: 1.5,
+      stats: { lvl: 50, class: 'rogue', str: 10, buffs: { tough: 1 } },
+      items: {
+        gear: { equipped: { weapon: 'weapon_rogue_1' } },
+        mounts: { 'Wolf-Base': true },
+        pets: { 'TigerCub-Base': true },
+      },
+      achievements: { rebirths: 1, rebirthLevel: 10 },
+      flags: { lastFreeRebirth: moment().subtract(1, 'days').toDate() }
+    });
+    user.items.currentMount = 'Wolf-Base';
+    user.items.currentPet = 'TigerCub-Base';
+
+    const tasks = [
+      generateHabit({ userId: user._id, counterDown: 1, counterUp: 1, value: 1 }),
+      generateDaily({ userId: user._id, value: 1, streak: 1 }),
+      generateTodo({ userId: user._id, value: 1 }),
+      generateReward({ userId: user._id, value: 1 })
+    ];
+
+    const [data] = await rebirth(user, tasks);
+
+    expect(data.user.stats.lvl).to.equal(1);
+    expect(data.user.stats.class).to.equal('warrior');
+    expect(data.user.stats.str).to.equal(0);
+    expect(data.user.stats.buffs.tough).to.equal(undefined);
+    expect(data.tasks[0].value).to.equal(0);
+    expect(data.tasks[1].value).to.equal(0);
+    expect(data.tasks[1].streak).to.equal(0);
+    expect(data.tasks[2].value).to.equal(0);
+    expect(data.tasks[3].value).to.equal(1);
+    expect(data.user.items.currentMount).to.equal('Wolf-Base');
+    expect(data.user.items.currentPet).to.equal('TigerCub-Base');
+    expect(data.user.achievements.rebirths).to.equal(2);
+    expect(data.user.achievements.rebirthLevel).to.equal(50);
+    expect(data.user.flags.lastFreeRebirth).to.be.a('date');
   });
 });
