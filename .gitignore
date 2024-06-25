@@ -52,7 +52,7 @@ webpack.webstorm.config
 mongodb-*.tgz
 /mongodb-data
 
-website/detail
+website/detail/coverage
 website/detail/generated
 spans.jsonl
 generated/
