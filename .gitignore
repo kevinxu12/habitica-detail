@@ -22,7 +22,10 @@ TODO
 src/*/*.map
 src/*/*/*.map
 *.sublime-workspace
-coverage
+coverage/*
+!coverage/coverage
+coverage/coverage/*
+!coverage/coverage/api-unit
 coverage.html
 common/dist/scripts/*
 dist
