@@ -27,7 +27,7 @@ attachMiddlewares(app, server);
 
 server.on('request', app);
 
-if (!process.env.DETAIL_GENERATE) {
+if (!process.env.DETAIL_RUN) {
   server.listen(app.get('port'), () => {
     logger.info(`Express server listening on port ${app.get('port')}`);
   });

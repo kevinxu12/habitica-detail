@@ -1,5 +1,6 @@
 module.exports = {
     testEnvironment: "<rootDir>/website/detail/generated/detail.environment.ts",
+    setupFiles: ["<rootDir>/detail.setEnvVars.js"],
     setupFilesAfterEnv: ["<rootDir>/website/detail/generated/detail.setup.ts"],
     transform: {
       "^.+\\.[tj]sx?$": [
