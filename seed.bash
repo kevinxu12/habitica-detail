@@ -89,11 +89,12 @@ create_chat_id=$(curl -s -X POST http://localhost:3000/api/v3/groups/$GROUP1_ID/
 
 CHAT1_UUID=$(echo "$create_chat_id" | jq -r '.data.message.uuid')
 
-echo "user 1's id is $USER1_ID"
-echo "user 1's api token is $USER1_API_TOKEN"
-echo "the client is $CLIENT"
-echo "UUID of chat is $CHAT1_UUID"
-echo "Group 1's id is $GROUP1_ID"
-echo "Challenge 1's id is $CHALLENGE1_ID"
+echo "USER1_ID=$USER1_ID"
+echo "USER1_API_TOKEN=$USER1_API_TOKEN"
+echo "CLIENT=$CLIENT"
+echo "CHAT1_UUID=$CHAT1_UUID"
+echo "GROUP1_ID=$GROUP1_ID"
+echo "CHALLENGE1_ID=$CHALLENGE1_ID"
+echo "seed completed"
 
 

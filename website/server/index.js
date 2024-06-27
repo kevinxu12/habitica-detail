@@ -8,9 +8,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const { setup } = require('@detail-dev/trace');
-setup({
-  localDevMode: true
-});
+if (process.env.DETAIL_TRACE) {
+  setup({
+    localDevMode: true,
+  });
+}
 
 const cluster = require('cluster');
 
