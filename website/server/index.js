@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const { setup } = require('@detail-dev/trace');
-if (process.env.DETAIL_TRACE) {
+if (process.env.DETAIL_TRACE === 'true') {
   setup({
     localDevMode: true,
   });
