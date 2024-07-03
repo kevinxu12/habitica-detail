@@ -26,7 +26,7 @@ run:
 
 .PHONY: replay-cov
 replay-cov:
-	npx @detail-dev/replay run-tests -t ${DETAIL_FOLDER} -c jest.detail.js
+	npx @detail-dev/replay run-tests -t ${DETAIL_FOLDER} -c jest.detail.js -j 1
 
 .PHONY: prune
 prune:
