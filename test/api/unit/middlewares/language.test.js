@@ -49,6 +49,18 @@ describe('language middleware', () => {
       expect(i18n.t).to.be.calledOnce;
       expect(i18n.t).to.be.calledWith(1, 2);
     });
+
+    it('sets up res.t for translating strings using the language from req.language', () => {
+      const req = generateReq();
+      req.language = 'es';
+      const res = generateRes();
+      const next = generateNext();
+
+      attachTranslateFunction(req, res, next);
+      
+      expect(res.t).to.be.a('function');
+      expect(res.t('someString')).to.equal(i18n.t('someString', 'es'));
+    });
   });
 
   describe('getUserLanguage', () => {
