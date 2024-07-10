@@ -3,15 +3,6 @@
 set -e
 MONGO_PID=""
 NPM_START_PID=""
-KEEP_MONGO_ALIVE=false
-
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        -ma|--mongoalive) KEEP_MONGO_ALIVE=true ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
-    esac
-    shift
-done
 
 killNpmRunStart() {
   (
@@ -33,23 +24,15 @@ killAllNodeProcesses() {
 }
 
 cleanup() {
-  echo "Running cleanup"
-  killNpmRunStart
-  if [ "$KEEP_MONGO_ALIVE" = false ] ; then
-    echo "Killing mongo process."
-    (
-      set +e
-      kill "$MONGO_PID"
-      # Kill all node processes just in case there are some stray child processes lingering.
-      killAllNodeProcesses
-      set -e
-    )
-  fi
-  if [ "$DELETE_LOGS" = true ] ; then
+  (
+    set +e 
+    echo "Running cleanup"
+    killNpmRunStart
     echo "Deleting temp logs in ./tmplogs"
     rm -rf ./tmplogs
-  fi
-  echo "Finished cleanup"
+    echo "Finished cleanup"
+    set -e
+  )
 }
 
 trap cleanup EXIT SIGINT SIGTERM
@@ -199,9 +182,13 @@ echo "Load complete."
 
 # Kill habitica w/ tracing process
 killNpmRunStart
-
+echo "Starting generation"
 # Generate detail replay tests
 make generate
-echo "Generate finished, now skipping replaying coverage report temporary"
+# At this point in time, the habitica generate eval set only references 2 replay tests. Generating coverage reports for each replay tests takes a significant amount of time.
+# If we prune the unused replay tests here, devbox initialization speeds up significantly.
+echo "Finished generating"
+make prune-replay
+echo "Finished pruning replay tests"
 make replay-cov
 echo "Setup script completed"

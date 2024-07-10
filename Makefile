@@ -24,6 +24,10 @@ generate:
 run:
 	npx jest --config jest.detail.js --testPathPattern ${DETAIL_FOLDER}/generated
 
+.PHONY: prune-replay
+prune-replay:
+	./prune-replay-tests.sh --replay-test-dir=website/detail/generated --keep=trace-6.test.ts,trace-8.test.ts
+
 .PHONY: replay-cov
 replay-cov:
 	npx @detail-dev/replay run-tests -t ${DETAIL_FOLDER} -c jest.detail.js -j 1
