@@ -12,5 +12,6 @@ module.exports = {
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
     testTimeout: 20000, // 20 seconds
     globalTeardown: '<rootDir>/test-teardown-globals.js',
+    coverageReporters: ["lcov", "text-summary"],
     maxWorkers: 1,
   };
