@@ -192,6 +192,3 @@ make prune-replay
 echo "Finished pruning replay tests"
 make replay-cov
 echo "Setup script completed"
-
-### THIS IS TEMPORARY
-sleep 200
