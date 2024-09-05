@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import nconf from 'nconf';
 import morgan from 'morgan';
 import cookieSession from 'cookie-session';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import compression from 'compression';
 import methodOverride from 'method-override';
 import passport from 'passport';
@@ -43,9 +43,9 @@ const TEN_YEARS = 1000 * 60 * 60 * 24 * 365 * 10;
 export default function attachMiddlewares (app, server) {
   setupExpress(app);
 
-  if (ENABLE_CLUSTER) {
-    app.use(domainMiddleware(server, mongoose));
-  }
+  // if (ENABLE_CLUSTER) {
+  //   app.use(domainMiddleware(server, mongoose));
+  // }
 
   if (!IS_PROD && !DISABLE_LOGGING) app.use(morgan('dev'));
 

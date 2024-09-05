@@ -25,13 +25,13 @@ export const model = mongoose.model('User', schema);
 // Otherwise it would remain undefined if requested before the query executes
 export const mods = [];
 
-mongoose.model('User')
-  .find({ 'contributor.moderator': true })
-  .sort('-contributor.level -backer.npc profile.name')
-  .select('profile contributor backer')
-  .exec()
-  .then(foundMods => {
-    // Using push to maintain the reference to mods
-    mods.push(...foundMods);
-  })
-  .catch(err => logger.error(err));
+// mongoose.model('User')
+//   .find({ 'contributor.moderator': true })
+//   .sort('-contributor.level -backer.npc profile.name')
+//   .select('profile contributor backer')
+//   .exec()
+//   .then(foundMods => {
+//     // Using push to maintain the reference to mods
+//     mods.push(...foundMods);
+//   })
+//   .catch(err => logger.error(err));

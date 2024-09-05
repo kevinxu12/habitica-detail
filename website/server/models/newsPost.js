@@ -91,5 +91,5 @@ export function refreshNewsPost (interval) {
 }
 
 // Fetches the last news post and refresh it every 5 minutes
-getAndUpdateLastNewsPost();
-refreshNewsPost(NEWS_CACHE_TIME);
+// getAndUpdateLastNewsPost();
+// refreshNewsPost(NEWS_CACHE_TIME);

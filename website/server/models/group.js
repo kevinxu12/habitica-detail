@@ -1205,19 +1205,19 @@ export const tavernQuest = {};
 const tavernQ = { _id: TAVERN_ID, 'quest.key': { $ne: null } };
 
 // we use process.nextTick because at this point the model is not yet available
-process.nextTick(() => {
-  model // eslint-disable-line no-use-before-define
-    .findOne(tavernQ).exec()
-    .then(tavern => {
-      if (!tavern) return; // No tavern quest
-
-      // Using _assign so we don't lose the reference to the exported tavernQuest
-      _.assign(tavernQuest, tavern.quest.toObject());
-    })
-    .catch(err => {
-      throw err;
-    });
-});
+// process.nextTick(() => {
+//   model // eslint-disable-line no-use-before-define
+//     .findOne(tavernQ).exec()
+//     .then(tavern => {
+//       if (!tavern) return; // No tavern quest
+//
+//       // Using _assign so we don't lose the reference to the exported tavernQuest
+//       _.assign(tavernQuest, tavern.quest.toObject());
+//     })
+//     .catch(err => {
+//       throw err;
+//     });
+// });
 
 // returns a promise
 schema.statics.tavernBoss = async function tavernBoss (user, progress) {
@@ -1640,16 +1640,16 @@ export const model = mongoose.model('Group', schema);
 
 // initialize tavern if !exists (fresh installs)
 // do not run when testing as it's handled by the tests and can easily cause a race condition
-if (!nconf.get('IS_TEST')) {
-  model.countDocuments({ _id: TAVERN_ID }).then(count => {
-    if (count === 0) {
-      new model({ // eslint-disable-line new-cap
-        _id: TAVERN_ID,
-        leader: '7bde7864-ebc5-4ee2-a4b7-1070d464cdb0', // Siena Leslie
-        name: 'Tavern',
-        type: 'guild',
-        privacy: 'public',
-      }).save();
-    }
-  });
-}
+// if (!nconf.get('IS_TEST')) {
+//   model.countDocuments({ _id: TAVERN_ID }).then(count => {
+//     if (count === 0) {
+//       new model({ // eslint-disable-line new-cap
+//         _id: TAVERN_ID,
+//         leader: '7bde7864-ebc5-4ee2-a4b7-1070d464cdb0', // Siena Leslie
+//         name: 'Tavern',
+//         type: 'guild',
+//         privacy: 'public',
+//       }).save();
+//     }
+//   });
+// }
