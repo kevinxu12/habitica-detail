@@ -36,7 +36,7 @@ export const schema = new Schema({
     $type: String,
     required: true,
     validate: [v => validator.isUUID(v), shared.i18n.t('invalidWebhookId')],
-    default: uuid,
+    default: () => uuid(),
   },
   type: {
     $type: String,

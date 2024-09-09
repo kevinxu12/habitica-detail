@@ -93,7 +93,10 @@ const { Schema } = mongoose;
 export const schema = new Schema({
   id: {
     $type: String,
-    default: uuid,
+    default: () => {
+      return uuid();
+    },
+
     validate: [v => validator.isUUID(v), 'Invalid uuid for userNotification.'],
     required: true,
   },

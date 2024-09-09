@@ -8,7 +8,7 @@ const { Schema } = mongoose;
 export const schema = new Schema({
   id: {
     $type: String,
-    default: uuid,
+    default: () => uuid(),
     validate: [v => validator.isUUID(v), 'Invalid uuid for tag.'],
     required: true,
   },
