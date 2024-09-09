@@ -50,7 +50,7 @@
     "method-override": "^3.0.0",
     "moment": "^2.29.4",
     "moment-recur": "^1.0.7",
-    "mongoose": "^7.6.3",
+    "mongoose": "6.12.7",
     "morgan": "^1.10.0",
     "nconf": "^0.12.1",
     "node-gcm": "^1.0.5",
@@ -85,6 +85,7 @@
   },
   "scripts": {
     "lint": "eslint --ext .js --fix . && cd website/client && npm run lint",
+    "lint:fix-files": "eslint --ext .js --fix",
     "lint-no-fix": "eslint --ext .js . && cd website/client && npm run lint-no-fix",
     "test": "npm run lint && gulp test && gulp apidoc",
     "test:build": "gulp test:prepare:build",
