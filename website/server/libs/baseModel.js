@@ -11,7 +11,7 @@ export default function baseModel (schema, options = {}) {
     schema.add({
       _id: {
         $type: String,
-        default: uuid,
+        default: () => uuid(),
         validate: [v => validator.isUUID(v), 'Invalid uuid in baseModel.'],
       },
     });
