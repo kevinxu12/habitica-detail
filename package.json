@@ -107,7 +107,7 @@
     "client:unit": "cd website/client && npm run test:unit",
     "start": "gulp nodemon",
     "debug": "gulp nodemon --inspect",
-    "mongo:dev": "run-rs -v 5.0.23 -l ubuntu1804 -h 127.0.0.1 --keep --dbpath mongodb-data --number 1 --quiet",
+    "mongo:dev": "docker rm --force habitica-detail-mongo && docker run -d --name habitica-detail-mongo --rm -p 27017:27017 --network host mongo:6.0.17",
     "mongo:dev:detail": "run-rs -v 5.0.23 -l ubuntu1804 -h 127.0.0.1 --dbpath mongodb-data --number 1 --quiet",
     "postinstall": "git config --global url.\"https://\".insteadOf git:// && gulp build && cd website/client && npm install",
     "apidoc": "gulp apidoc"

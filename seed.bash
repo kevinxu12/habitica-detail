@@ -20,7 +20,7 @@ install_jq() {
 install_jq
 
 
-create_user1_output=$(curl -s -X POST http://localhost:3000/api/v3/user/auth/local/register \
+create_user1_output=$(curl -X POST http://localhost:3000/api/v3/user/auth/local/register \
   -H "Content-Type: application/json" \
   -d '{
         "username": "testuser1",
