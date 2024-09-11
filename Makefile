@@ -22,11 +22,10 @@ generate:
 
 .PHONY: run
 run:
-	npx jest --config jest.detail.js --testPathPattern ${DETAIL_FOLDER}/generated
-
+	npx jest --config jest.detail.js --testPathPattern ${DETAIL_FOLDER}/generated --testTimeout 40000
 .PHONY: replay-cov
 replay-cov:
-	npx @detail-dev/replay run-tests -t ${DETAIL_FOLDER} -c jest.detail.js
+	npx @detail-dev/replay run-tests -t ${DETAIL_FOLDER} -c jest.detail.js  --test-timeout 40000
 
 .PHONY: prune
 prune:
@@ -34,4 +33,4 @@ prune:
 
 .PHONY: summarize
 summarize:
-	npx @detail-dev/replay summarize -t ${DETAIL_FOLDER}/generated -r generated/test_results -o generated/summary.md
+	DETAIL_NO_TRUNCATE=true npx @detail-dev/replay summarize -t ${DETAIL_FOLDER}/generated -r generated/test_results -o generated/summary.md

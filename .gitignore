@@ -54,7 +54,6 @@ mongodb-*.tgz
 
 website/detail/coverage
 website/detail/generated
-spans.jsonl
 generated/
 
 .nyc_output/
