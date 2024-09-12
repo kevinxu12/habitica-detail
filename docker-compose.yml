@@ -1,4 +1,3 @@
-version: "3"
 services:
 
   client:
@@ -25,12 +24,22 @@ services:
       - mongo
 
   mongo:
-    image: mongo:3.6
+    image: mongo:6.0.17
+    container_name: mongodb_replica
+    command: ["--replSet", "rs0", "--bind_ip_all"]
     ports:
       - "27017:27017"
-    networks:
-      - habitica
+    healthcheck:
+      test: mongosh --eval "rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:27017'}]})"
+      interval: 1s
+      timeout: 30s
+      retries: 3
+    volumes:
+      - "mongodata:/data/db"
 
 networks:
   habitica:
     driver: bridge
+
+volumes:
+    mongodata:
