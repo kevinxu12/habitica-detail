@@ -12,14 +12,14 @@ process.env.SCREENSHOT_ONE_SECRET_KEY = "REDACTED";
 process.env.__DETAIL_TEST_MODE = "true";
 
 import { libraries, request, utils } from "@detail-dev/replay";
-import redis4 from "redis";
-import mongodb from "mongodb";
 import bson from "bson";
+import mongodb from "mongodb";
+import redis4 from "redis";
 import crypto from "crypto";
 
-jest.mock("redis", () => libraries.RedisInterceptor.createMock());
-jest.mock("mongodb");
 jest.mock("bson", () => libraries.BsonInterceptor.createMock());
+jest.mock("mongodb");
+jest.mock("redis", () => libraries.RedisInterceptor.createMock());
 jest.mock("crypto", () => {
   const mCrypto = {
     ...jest.requireActual("crypto"),
@@ -33,7 +33,194 @@ jest.mock("crypto", () => {
 
 describe("POST /api/v4/groups/49e8182e-6936-4a55-83ac-c354415c3228/quests/invite/dustbunnies", () => {
   let response: request.Response;
-  let redisInterceptor: libraries.RedisInterceptor;
+  // Set up bson fixtures.
+  const bsonCallsExpected = [
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 130],
+      id: "785c119c22f04c78",
+      timestamp: 1725993280399000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 131],
+      id: "f0762f6a74daf5c6",
+      timestamp: 1725993280401000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 132],
+      id: "7e0dec0982dce5cc",
+      timestamp: 1725993280402000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 133],
+      id: "b4aa580443b11b52",
+      timestamp: 1725993280403000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 134],
+      id: "db8607ca961461f1",
+      timestamp: 1725993280434000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 135],
+      id: "b8f5bb975454c3f2",
+      timestamp: 1725993280435000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 136],
+      id: "d4b692f51805dc6f",
+      timestamp: 1725993280436000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 137],
+      id: "e788e2689d51a76d",
+      timestamp: 1725993280438000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 138],
+      id: "e09ef251e04b6e07",
+      timestamp: 1725993280672000,
+      startup: true,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 5],
+      id: "e627f647b9662d9c",
+      timestamp: 1725993420283000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 6],
+      id: "c0b7a63cb6863658",
+      timestamp: 1725993420307000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 7],
+      id: "92c6cb874283ed24",
+      timestamp: 1725993420312000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 8],
+      id: "119e8780e15677b0",
+      timestamp: 1725993420317000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 9],
+      id: "15ce01fc5c61dd6a",
+      timestamp: 1725993420324000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 10],
+      id: "30cdc7535913a008",
+      timestamp: 1725993420333000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 11],
+      id: "732ba4425ff5440e",
+      timestamp: 1725993420345000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 12],
+      id: "6ae393af9bc94963",
+      timestamp: 1725993420348000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 13],
+      id: "b4918a5bf15dde10",
+      timestamp: 1725993420363000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 14],
+      id: "9a86125d2fc9f8e6",
+      timestamp: 1725993420364000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 15],
+      id: "49c9c6b787394ebc",
+      timestamp: 1725993420366000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 16],
+      id: "5c4d633d7ee980c0",
+      timestamp: 1725993420367000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 17],
+      id: "15719475dd289213",
+      timestamp: 1725993420378000,
+      startup: false,
+    },
+    {
+      library: "bson",
+      input: null,
+      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 18],
+      id: "39c172ed37c57be4",
+      timestamp: 1725993420380000,
+      startup: false,
+    },
+  ];
+  let bsonInterceptor: libraries.BsonInterceptor;
 
   // Set up mongodb fixtures.
   const mongodbCallsExpected = [
@@ -2099,194 +2286,7 @@ describe("POST /api/v4/groups/49e8182e-6936-4a55-83ac-c354415c3228/quests/invite
   ];
   let mongodbInterceptor: libraries.MongodbInterceptor;
 
-  // Set up bson fixtures.
-  const bsonCallsExpected = [
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 130],
-      id: "785c119c22f04c78",
-      timestamp: 1725993280399000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 131],
-      id: "f0762f6a74daf5c6",
-      timestamp: 1725993280401000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 132],
-      id: "7e0dec0982dce5cc",
-      timestamp: 1725993280402000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 133],
-      id: "b4aa580443b11b52",
-      timestamp: 1725993280403000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 134],
-      id: "db8607ca961461f1",
-      timestamp: 1725993280434000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 135],
-      id: "b8f5bb975454c3f2",
-      timestamp: 1725993280435000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 136],
-      id: "d4b692f51805dc6f",
-      timestamp: 1725993280436000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 137],
-      id: "e788e2689d51a76d",
-      timestamp: 1725993280438000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 64, 226, 126, 105, 22, 0, 19, 248, 138],
-      id: "e09ef251e04b6e07",
-      timestamp: 1725993280672000,
-      startup: true,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 5],
-      id: "e627f647b9662d9c",
-      timestamp: 1725993420283000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 6],
-      id: "c0b7a63cb6863658",
-      timestamp: 1725993420307000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 7],
-      id: "92c6cb874283ed24",
-      timestamp: 1725993420312000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 8],
-      id: "119e8780e15677b0",
-      timestamp: 1725993420317000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 9],
-      id: "15ce01fc5c61dd6a",
-      timestamp: 1725993420324000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 10],
-      id: "30cdc7535913a008",
-      timestamp: 1725993420333000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 11],
-      id: "732ba4425ff5440e",
-      timestamp: 1725993420345000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 12],
-      id: "6ae393af9bc94963",
-      timestamp: 1725993420348000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 13],
-      id: "b4918a5bf15dde10",
-      timestamp: 1725993420363000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 14],
-      id: "9a86125d2fc9f8e6",
-      timestamp: 1725993420364000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 15],
-      id: "49c9c6b787394ebc",
-      timestamp: 1725993420366000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 16],
-      id: "5c4d633d7ee980c0",
-      timestamp: 1725993420367000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 17],
-      id: "15719475dd289213",
-      timestamp: 1725993420378000,
-      startup: false,
-    },
-    {
-      library: "bson",
-      input: null,
-      output: [102, 224, 145, 204, 226, 126, 105, 22, 0, 19, 249, 18],
-      id: "39c172ed37c57be4",
-      timestamp: 1725993420380000,
-      startup: false,
-    },
-  ];
-  let bsonInterceptor: libraries.BsonInterceptor;
+  let redisInterceptor: libraries.RedisInterceptor;
 
   let httpInterceptor: libraries.HttpInterceptor;
 
@@ -13950,15 +13950,15 @@ describe("POST /api/v4/groups/49e8182e-6936-4a55-83ac-c354415c3228/quests/invite
         },
       },
       expectedCalls: [
-        ...mongodbCallsExpected,
         ...bsonCallsExpected,
+        ...mongodbCallsExpected,
         ...cryptoCallsExpected,
         ...dateCallsExpected,
       ],
       observedCalls: [
-        ...redisInterceptor.getObservedCalls(),
-        ...mongodbInterceptor.getObservedCalls(),
         ...bsonInterceptor.getObservedCalls(),
+        ...mongodbInterceptor.getObservedCalls(),
+        ...redisInterceptor.getObservedCalls(),
         ...httpInterceptor.getObservedCalls(),
         ...cryptoInterceptor.getObservedCalls(),
         ...dateInterceptor.getObservedCalls(),
@@ -13967,14 +13967,14 @@ describe("POST /api/v4/groups/49e8182e-6936-4a55-83ac-c354415c3228/quests/invite
   });
 
   it("should run as expected with example data", async () => {
-    redisInterceptor = new libraries.RedisInterceptor(redis4);
-    redisInterceptor.expectCalls([]);
+    bsonInterceptor = new libraries.BsonInterceptor();
+    bsonInterceptor.expectCalls(bsonCallsExpected);
 
     mongodbInterceptor = new libraries.MongodbInterceptor(mongodb);
     mongodbInterceptor.expectCalls(mongodbCallsExpected);
 
-    bsonInterceptor = new libraries.BsonInterceptor();
-    bsonInterceptor.expectCalls(bsonCallsExpected);
+    redisInterceptor = new libraries.RedisInterceptor(redis4);
+    redisInterceptor.expectCalls([]);
 
     // @ts-expect-error we manage http mocking globally, so that we can reuse a
     // global polly server. We pass in hooks to manage the global state here.
